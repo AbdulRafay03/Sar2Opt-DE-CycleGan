@@ -1,0 +1,9 @@
+start_train:
+python train.py --dataroot .\Dataset --name <experiment_name> --model cycle_gan
+
+continue_train:
+python train.py --dataroot .\Dataset --name <experiment_name> --model cycle_gan --continue_train --epoch <n>
+
+inference:
+
+test
