@@ -9,3 +9,6 @@ python test.py --dataroot .\Dataset --name train1_cyclegan --model cycle_gan --n
 
 test:
 python test.py --dataroot ./datasets/sar2opt --name <experiment_name> --model cycle_gan
+
+
+python metric\SSIM.py --fake_subdir results\train1_cyclegan\test_latest\seprated\fakeA --real_subdir results\train1_cyclegan\test_latest\seprated\realA
