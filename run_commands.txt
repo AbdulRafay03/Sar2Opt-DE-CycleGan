@@ -6,4 +6,5 @@ python train.py --dataroot .\Dataset --name <experiment_name> --model cycle_gan 
 
 inference:
 
-test
+test:
+python test.py --dataroot ./datasets/sar2opt --name <experiment_name> --model cycle_gan
