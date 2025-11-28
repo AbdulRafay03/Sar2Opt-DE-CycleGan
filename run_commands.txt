@@ -4,7 +4,8 @@ python train.py --dataroot .\Dataset --name <experiment_name> --model cycle_gan
 continue_train:
 python train.py --dataroot .\Dataset --name <experiment_name> --model cycle_gan --continue_train --epoch <n>
 
-inference:
+inference: (this will select a random sample from test directory and generated images are in an html file)
+python test.py --dataroot .\Dataset --name train1_cyclegan --model cycle_gan --num_test 1 --results_dir ./results/test1
 
 test:
 python test.py --dataroot ./datasets/sar2opt --name <experiment_name> --model cycle_gan

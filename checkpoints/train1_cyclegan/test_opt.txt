@@ -28,12 +28,12 @@
                no_dropout: False                         
                   no_flip: False                         
                      norm: instance                      
-                 num_test: 5000                          
+                 num_test: 1                             	[default: 5000]
               num_threads: 4                             
                 output_nc: 3                             
                     phase: test                          
                preprocess: resize_and_crop               
-              results_dir: .\results                     
+              results_dir: ./results/test1               	[default: .\results]
            serial_batches: False                         
                    suffix:                               
                   verbose: False                         
