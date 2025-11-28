@@ -25,7 +25,7 @@ def save_images(webpage, visuals, image_path, aspect_ratio= 1.0, width= 256):
 
     This function will save images stored in 'visuals' to the HTML file specified by 'webpage'.
     """
-    image_dir = webpage.get.image_dir()
+    image_dir = webpage.get_image_dir()
     short_path = ntpath.basename(image_path)
     name = os.path.splitext(short_path)[0]
 
