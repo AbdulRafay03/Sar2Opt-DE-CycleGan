@@ -23,7 +23,7 @@ Example (You need to train models first or download pre-trained models from our 
 
 
 import os
-from options.test_options import TestOptions
+from options.inference_options import InferenceOptions
 from data import create_dataset
 from models import create_model
 from utils.visualizer import save_images
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     start_time = time.time()
     print('start time:', start_time)
 
-    opt = TestOptions().parse()  
+    opt = InferenceOptions().parse()  
     opt.num_threads = 0
     opt.batch_size = 1
     opt.serial_batches = True
