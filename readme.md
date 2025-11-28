@@ -11,7 +11,7 @@ This repository contains an implementation of **CycleGAN** for translating SAR i
 * PyTorch
 * torchvision
 * PIL (Pillow)
-* Other dependencies as listed in `requirements.txt` (if available)
+* Other dependencies as listed in `requirements.txt` 
 
 ---
 
@@ -24,7 +24,7 @@ Dataset/
 ├── trainA/       # Input domain (SAR images)
 ├── trainB/       # Target domain (Optical images)
 ├── testA/        # Test input images (SAR)
-├── testB/        # Test target images (Optical) [optional]
+├── testB/        # Test target images (Optical)
 ```
 
 **Note:** This project was trained on **1450 images** using DiffAugmentation to enhance model performance with limited data.
