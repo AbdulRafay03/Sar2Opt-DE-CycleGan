@@ -1,8 +1,8 @@
 import os
 import shutil
 
-src = r"C:\Users\Abdul Rafay\Desktop\Sar2Opt-DE-CycleGAN\Sar2Opt-DE-CycleGan\results\train1_cyclegan\test_latest\images - Copy"      # folder containing all files
-dst = r"results\train1_cyclegan\test_latest\seprated"           # folder where separated folders will be created
+src = r"results\images"      # folder containing all files
+dst = r"results\seprated"           # folder where separated folders will be created
 
 categories = {
     "fake_A": "fakeA",

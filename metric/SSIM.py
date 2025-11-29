@@ -8,7 +8,7 @@ import argparse
 
 
 def cal_SSIM(x, y):
-    return ssim(x, y, multichannel=True)
+    return ssim(x, y,win_size=3, multichannel=True)
 
 
 def get_dirImage(real_dir, fake_dir):

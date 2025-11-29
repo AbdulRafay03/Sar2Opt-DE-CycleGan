@@ -14,4 +14,4 @@ dominate>=2.7.0
 # For general utilities
 argparse
 functools32; python_version<"3.0"
-
+pytorch-fid

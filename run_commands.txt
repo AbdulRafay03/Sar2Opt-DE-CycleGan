@@ -12,3 +12,45 @@ python test.py --dataroot ./datasets/sar2opt --name <experiment_name> --model cy
 
 
 python metric\SSIM.py --fake_subdir results\train1_cyclegan\test_latest\seprated\fakeA --real_subdir results\train1_cyclegan\test_latest\seprated\realA
+
+SSIM:
+python metric/SSIM.py --dir_root .  --fake_subdir results\seprated\fakeA --real_subdir results\seprated\realA
+
+
+(base) C:\Users\Shaikh Abdul Rafay\Desktop\DE-gan-github\Sar2Opt-DE-CycleGan>pytorch-fid results/seprated/realA results/seprated/fakeA
+Real dir: ./results\seprated\realA
+Fake dir: ./results\seprated\fakeA
+Real found: 627
+Fake found: 627
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 627/627 [00:49<00:00, 12.76it/s] 
+mean SSIM:  0.13760145177225877
+
+
+(base) C:\Users\Shaikh Abdul Rafay\Desktop\DE-gan-github\Sar2Opt-DE-CycleGan>pytorch-fid results/seprated/realA results/seprated/fakeA
+Downloading: "https://github.com/mseitzer/pytorch-fid/releases/download/fid_weights/pt_inception-2015-12-05-6726825d.pth" to C:\Users\Shaikh Abdul Rafay/.cache\torch\hub\checkpoints\pt_inception-2015-12-05-6726825d.pth
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 91.2M/91.2M [00:46<00:00, 2.06MB/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 13/13 [00:09<00:00,  1.35it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 13/13 [00:08<00:00,  1.47it/s]
+FID:  108.20325578499455
+
+(base) C:\Users\Shaikh Abdul Rafay\Desktop\DE-gan-github\Sar2Opt-DE-CycleGan>python metric/fid_kid.py results/seprated/realA results/seprated/fakeA 
+
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 13/13 [00:39<00:00,  3.05s/it]
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 13/13 [00:38<00:00,  2.94s/it]
+FID:  108.3069687883073
+Warning: subset_size is bigger than len(codes_g).
+MMD: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 50/50 [00:04<00:00, 11.26it/s, mean=0.0213] 
+mean MMD^2 estimate: 2.1310770333031055
+std MMD^2 estimate: 2.8310687127941495e-16
+
+
+(base) C:\Users\Shaikh Abdul Rafay\Desktop\DE-gan-github\Sar2Opt-DE-CycleGan>python metric\psnr_ssim.py
+627
+Real dir: .\results\seprated\fakeA
+Fake dir: .\results\seprated\realA
+Real found: 627
+Fake found: 627
+SSIM on 627 samples
+Mean: 0.08769786209275002 std: 0.08377472316829271
+PSNR on 627 samples
+Mean: 11.332815667393264 std: 1.8235777883287456
