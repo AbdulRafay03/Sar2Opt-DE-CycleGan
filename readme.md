@@ -1,7 +1,9 @@
 
 # Sar2Opt-DE-CycleGan
 
-This repository contains an implementation of **CycleGAN** for translating SAR images to optical images (Sar2Opt) using PyTorch. The model is trained using **Differentiable Data Augmentation (DiffAugmentation)** to improve generalization on a small dataset of **1450 images**. The code supports training, continuing training, and testing/inference with visualization in HTML.
+This repository contains an implementation of **CycleGAN** for translating SAR images to Optical images (Sar2Opt) using PyTorch.
+The model is trained using **Differentiable Data Augmentation (DiffAugmentation)** to improve generalization on a limited dataset of **1450 images**.
+The code supports full training, continuous training, testing, and metric evaluation (SSIM, PSNR, FID, KID).
 
 ---
 
@@ -10,24 +12,27 @@ This repository contains an implementation of **CycleGAN** for translating SAR i
 * Python 3.10
 * PyTorch
 * torchvision
-* PIL (Pillow)
-* Other dependencies as listed in `requirements.txt` 
+* Pillow (PIL)
+* scikit-image
+* tqdm
+* pytorch-fid
+* Other dependencies listed in `requirements.txt`
 
 ---
 
 ## Dataset Structure
 
-The dataset should follow the standard CycleGAN structure:
+The dataset must follow the standard CycleGAN structure:
 
 ```
 Dataset/
 ├── trainA/       # Input domain (SAR images)
 ├── trainB/       # Target domain (Optical images)
-├── testA/        # Test input images (SAR)
-├── testB/        # Test target images (Optical)
+├── testA/        # Test SAR images
+├── testB/        # Test Optical images
 ```
 
-**Note:** This project was trained on **1450 images** using DiffAugmentation to enhance model performance with limited data.
+**Training was performed on 1450 images with DiffAugmentation enabled.**
 
 ---
 
@@ -49,7 +54,7 @@ python train.py --dataroot .\Dataset --name <experiment_name> --model cycle_gan 
 
 ## Inference
 
-Generate images from a random sample in the test dataset. Results will be saved in an HTML file.
+Generate images from the test directory and save them in an HTML viewer:
 
 ```bash
 python test.py --dataroot .\Dataset --name train1_cyclegan --model cycle_gan --num_test 1 --results_dir ./results/test1
@@ -57,9 +62,7 @@ python test.py --dataroot .\Dataset --name train1_cyclegan --model cycle_gan --n
 
 ---
 
-## Test Mode
-
-Run inference on a specified dataset:
+## Test Mode (full dataset)
 
 ```bash
 python test.py --dataroot ./datasets/sar2opt --name <experiment_name> --model cycle_gan
@@ -69,28 +72,113 @@ python test.py --dataroot ./datasets/sar2opt --name <experiment_name> --model cy
 
 ## Output
 
-* Trained models are saved in the `checkpoints` directory under the experiment name.
-* Generated images and visualizations are saved in the `results` directory in HTML format for easy browsing.
+* Trained models → `checkpoints/<experiment_name>/`
+* Generated results → `results/<experiment_name>/test_latest/`
+* Images also saved in an interactive HTML page
+* Evaluation images separated into `results/seprated/fakeA` and `results/seprated/realA` for metrics
 
 ---
 
-## Notes
+# Metrics Evaluation (SSIM / PSNR / FID / KID)
 
-* `--num_test` specifies the number of test images to process.
-* `--continue_train` and `--epoch <n>` allow you to resume training from a specific epoch.
-* `--results_dir` specifies the directory to save generated images and HTML visualizations.
-* **DiffAugmentation** is applied during training to improve results with limited dataset size.
+Below are the commands and my actual results.
 
-## Results
+---
 
-* After running inference, the following images are generated:
+## SSIM
 
-## Example Results
+### Command
 
-| Real A | Fake B | Reconstructed A |
-|--------|--------|----------------|
-| ![real_A](results/test1/train1_cyclegan/test_latest/images/11_1200_0_real_A.png) | ![fake_B](results/test1/train1_cyclegan/test_latest/images/11_1200_0_fake_B.png) | ![rec_A](results/test1/train1_cyclegan/test_latest/images/11_1200_0_rec_A.png) |
+```bash
+python metric/SSIM.py --dir_root . --fake_subdir results\seprated\fakeA --real_subdir results\seprated\realA
+```
 
-| Real B | Fake A | Reconstructed B |
-|--------|--------|----------------|
-| ![real_B](results/test1/train1_cyclegan/test_latest/images/11_1200_0_real_B.png) | ![fake_A](results/test1/train1_cyclegan/test_latest/images/11_1200_0_fake_A.png) | ![rec_B](results/test1/train1_cyclegan/test_latest/images/11_1200_0_rec_B.png) |
+### Result
+
+```
+mean SSIM: 0.1376
+```
+
+---
+
+## PSNR + SSIM Combined
+
+### Command
+
+```bash
+python metric/psnr_ssim.py
+```
+
+### Result
+
+```
+SSIM Mean: 0.0877
+PSNR Mean: 11.3328
+```
+
+---
+
+## FID (pytorch-fid)
+
+### Command (CLI)
+
+```bash
+pytorch-fid results/seprated/realA results/seprated/fakeA
+```
+
+### Result
+
+```
+FID: 108.203
+```
+
+---
+
+## FID + KID (Custom)
+
+### Command
+
+```bash
+python metric/fid_kid.py results/seprated/realA results/seprated/fakeA
+```
+
+### Result
+
+```
+FID: 108.3069
+mean MMD^2 (KID): 0.0213
+```
+
+---
+
+# Metrics Summary
+
+| Metric                  | Value    |
+| ----------------------- | -------- |
+| **SSIM**                | 0.1376   |
+| **SSIM (psnr_ssim.py)** | 0.0877   |
+| **PSNR**                | 11.33 dB |
+| **FID (pytorch-fid)**   | 108.20   |
+| **FID (fid_kid.py)**    | 108.31   |
+| **KID (mean MMD²)**     | 0.0213   |
+
+---
+
+# Example Results
+
+### Real A → Fake B → Reconstructed A
+
+| Real A                                                                      | Fake B                                                                      | Rec A                                                                     |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| ![real\_A](results/train1_cyclegan/test_latest/images/11_1200_0_real_A.png) | ![fake\_B](results/train1_cyclegan/test_latest/images/11_1200_0_fake_B.png) | ![rec\_A](results/train1_cyclegan/test_latest/images/11_1200_0_rec_A.png) |
+
+---
+
+### Real B → Fake A → Reconstructed B
+
+| Real B                                                                      | Fake A                                                                      | Rec B                                                                     |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| ![real\_B](results/train1_cyclegan/test_latest/images/11_1200_0_real_B.png) | ![fake\_A](results/train1_cyclegan/test_latest/images/11_1200_0_fake_A.png) | ![rec\_B](results/train1_cyclegan/test_latest/images/11_1200_0_rec_B.png) |
+
+---
+
